@@ -1,0 +1,220 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+	Class User_register_model extends CI_Model {
+		
+		public function __construct()
+        {
+            // Call the CI_Model constructor
+            parent::__construct();
+        }
+
+        // Check if mail exist or not
+		public function check_mail_exists($email){
+			$query = $this->db->get_where('users',array('email'=>$email));
+			if ($query->num_rows() > 0){
+				return true;
+			} 
+			else {
+				return false;
+			}
+		}
+
+		//Register user
+
+		public function register_user($userdata){
+			$regitration_success=$this->db->insert('users',$userdata);
+			if($regitration_success){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+
+		//user login
+		public function auth_user($email, $password){
+			$condition =array('email'=>$email,'password'=>$password);
+			$this->db->select('*')->from('users')->where($condition)->limit(1);
+			$query = $this->db->get();
+			if ($query->num_rows() == 1)
+				{
+				return $query->result();
+			}
+			else{
+				return false;
+			}
+		}
+
+		//sticky notes
+		public function add_notes($note_data){
+			$notes_add = $this->db->insert('quicknotes',$note_data);
+
+			if($notes_add){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		//get stickey notes by user Id
+		public function get_all_notes($user_id){
+			$this->db->select('*')->where('user_id', $user_id)->order_by('created_at','desc');
+			$q = $this->db->get('quicknotes');
+			if ($q->num_rows() > 0)
+				{
+				return $q->result();
+			}
+			else{
+				return false;
+			}
+		}
+
+		//Add task category by user
+		public function add_category($category_data){
+			$category_add = $this->db->insert('categories',$category_data);
+
+			if($category_add){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		//get category by user id
+		public function get_user_category($user_id){
+			$this->db->select('*')->where('user_id', $user_id)->order_by('created_at','desc');
+			$q = $this->db->get('categories');
+			if ($q->num_rows() > 0)
+				{
+				return $q->result();
+			}
+			else{
+				return false;
+			}
+		}
+
+
+		//add user task
+		public function add_user_task($task_data){
+			$add_task = $this->db->insert('tasks', $task_data);
+			if($add_task){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		// get user tasks
+		public function get_user_tasks($user_id){
+			$this->db->select('*')->where('user_id', $user_id);
+			$q = $this->db->get('tasks');
+			if ($q->num_rows() > 0)
+				{
+				return $q->result();
+			}
+			else{
+				return false;
+			}
+			
+		}
+
+		//add user event
+		public function add_user_event($event_data){
+			$event_success=$this->db->insert('events',$event_data);
+			if($event_success){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		// get user tasks
+		public function get_user_events($user_id){
+			$this->db->select('*')->where('user_id', $user_id);
+			$q = $this->db->get('events');
+			if ($q->num_rows() > 0)
+				{
+				return $q->result();
+			}
+			else{
+				return false;
+			}
+			
+		}
+
+		//update app settings
+		public function app_setting_update($user_id, $app_setting_data){
+			$query = $this->db->get_where('app_settings',array('user_id'=>$user_id));
+			if ($query->num_rows() > 0){
+				$this->db->where('user_id', $user_id);
+				$this->db->update('app_settings', $app_setting_data);
+				return true;
+			} 
+			else {
+				$app_settings=$this->db->insert('app_settings',$app_setting_data);
+				return true;
+			}
+			return false;
+		}
+
+		//get today todos
+
+		public function today_todos($today_date, $user_id){
+			$task_query =  $this->db->query("SELECT * FROM tasks WHERE DATE(created_at) = $today_date && user_id = $user_id");
+			$tasks_result = $task_query->result();
+			// $condition =array('user_id'=>$user_id,'created_at'=>DATE($today_date));
+			// $this->db->select('*')->from('tasks')->where($condition);
+			//$query = $this->db->get();
+			if ($tasks_result != '')
+				{
+				return $tasks_result;
+			}
+			else{
+				return false;
+			}
+		}
+
+
+		//delete note
+		public function delete_note($note_id){
+			$this->db->where('id', $note_id);
+			$this->db->delete('quicknotes');
+			
+			if ($this->db->affected_rows() > 0) {
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+
+		//change password
+		public function change_password($user_id, $new_password){
+			$this->db->set('password',$new_password);
+			$this->db->where('id', $user_id);
+			$this->db->update('users');
+			if ($this->db->affected_rows() > 0) {
+				return true;
+			}
+			else{
+				return false;
+			}
+
+		}
+
+		//delete user category
+
+		public function delete_category($cat_id){
+			$this->db->where('id', $cat_id);
+			$this->db->delete('categories');
+			
+			if ($this->db->affected_rows() > 0) {
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+
+    }

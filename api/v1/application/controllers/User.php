@@ -510,7 +510,7 @@ public function logotp_post(){
 		$category = $this->post('category');
 		$color = $this->post('color');
 		$sub_tasks = json_encode($this->post('sub_tasks'));
-		
+		$calendar = $this->post('calendar');
 		
 		$due_date = $this->post('due_date');
 		$type = $this->post('type');
@@ -531,7 +531,8 @@ public function logotp_post(){
 						'category' => $category,
 						'color' => $color,
 						'due_date' => $due_date,
-						'type'=>$type
+						'type'=>$type,
+						'calendar'=>$calendar
 					);
 				}else{
 				$task_data = array(
@@ -546,7 +547,8 @@ public function logotp_post(){
 						'color' => $color,
 						'due_date' => $due_date,
 						'sub_tasks' => $sub_tasks,
-						'type'=>$type
+						'type'=>$type,
+						'calendar'=>$calendar
 					);
 				}
 		}
@@ -715,7 +717,7 @@ public function logotp_post(){
 		$category = $this->post('category');
 		$color = $this->post('color');
 		$sub_tasks = json_encode($this->post('sub_tasks'));
-		
+		$calendar = $this->post('calendar');
 		
 		$due_date = $this->post('due_date');
 		$type = $this->post('type');
@@ -736,7 +738,8 @@ public function logotp_post(){
 						'category' => $category,
 						'color' => $color,
 						'due_date' => $due_date,
-						'type'=>$type
+						'type'=>$type,
+						'calendar'=>$calendar
 					);
 				}else{
 				$task_data = array(
@@ -751,7 +754,8 @@ public function logotp_post(){
 						'color' => $color,
 						'due_date' => $due_date,
 						'sub_tasks' => $sub_tasks,
-						'type'=>$type
+						'type'=>$type,
+						'calendar'=>$calendar
 					);
 				}
 		}
@@ -1122,6 +1126,7 @@ public function logotp_post(){
 		$user_task = [];
 		$user_id = $this->post('user_id');
 		$taskdata = $this->post('taskdata');
+		$calendar =  $this->post('calendar');
 		
 		$start_date = $this->post('start_date');
 		$end_date = $this->post('end_date');
@@ -1149,7 +1154,7 @@ public function logotp_post(){
 		$interval = date_diff($date_a,$date_b);
 
 		 $duration=$interval->format('%h:%i');
-		$result = $this->User_register_model->update_user_tasks($user_id,$id,$start_date,$name,$duration);
+		$result = $this->User_register_model->update_user_tasks($user_id,$id,$start_date,$name,$duration,$calendar);
 		//print_r($result); exit;
 		if($result == TRUE){
 				$user_task['status'] = 'success';
@@ -1249,6 +1254,7 @@ public function logotp_post(){
 				//$user_task['all_tasks'] = $get_user_tasks;
 				 foreach($get_user_tasks as $data)
 				{
+					$calendar= $data->calendar;
 					$color=$data->color;
 					$type=$data->type;
 					if($type=='event')
@@ -1314,8 +1320,8 @@ public function logotp_post(){
 					    $time3->add(new DateInterval('PT' . $minutes_to_add3 . 'M'));
 						$start_date2 = $time3->format('Y-m-d H:i');
 					
-						$user_task['all_tasks'][]=array("id"=>$data->id,"start_date"=>$start_date2,"end_date"=>$end_date,"text"=>$data->name,"color"=>$color,"textColor"=>"#fff","rec_type"=>"day_1___1,2,3,4,5","event_length"=>"7200");
-						$user_task['all_tasks'][]=array("id"=>$data->id,"start_date"=>$data->due_date,"end_date"=>$end_date1,"text"=>$data->name,"color"=>$color,"textColor"=>"#fff","rec_type"=>"day_1___1,2,3,4,5","event_length"=>"7200");
+						$user_task['all_tasks'][]=array("id"=>$data->id,"start_date"=>$start_date2,"end_date"=>$end_date,"text"=>$data->name,"color"=>$color,"textColor"=>"#fff","rec_type"=>"day_1___1,2,3,4,5","event_length"=>"7200","calendar"=>$calendar);
+						$user_task['all_tasks'][]=array("id"=>$data->id,"start_date"=>$data->due_date,"end_date"=>$end_date1,"text"=>$data->name,"color"=>$color,"textColor"=>"#fff","rec_type"=>"day_1___1,2,3,4,5","event_length"=>"7200","calendar"=>$calendar);
 						
 					}
 					else{
@@ -1326,7 +1332,7 @@ public function logotp_post(){
 							   $end_date=date('Y-m-d 00:00');
 							   
 							} 
-						$user_task['all_tasks'][]=array("id"=>$data->id,'event_pid'=>0,"start_date"=>$data->due_date,"end_date"=>$end_date,"text"=>$data->name,"color"=>$color,"textColor"=>"#fff","rec_type"=>"day_1___","event_length"=>"7200");
+						$user_task['all_tasks'][]=array("id"=>$data->id,'event_pid'=>0,"start_date"=>$data->due_date,"end_date"=>$end_date,"text"=>$data->name,"color"=>$color,"textColor"=>"#fff","rec_type"=>"day_1___","event_length"=>"7200","calendar"=>$calendar);
 					    
 						/* for($i=1;$i<=5;$i++)
 						{

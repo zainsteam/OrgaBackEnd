@@ -510,6 +510,7 @@ public function logotp_post(){
 		$category = $this->post('category');
 		$color = $this->post('color');
 		$sub_tasks = json_encode($this->post('sub_tasks'));
+		$calendar = $this->post('calendar');
 		
 		
 		$due_date = $this->post('due_date');
@@ -531,7 +532,8 @@ public function logotp_post(){
 						'category' => $category,
 						'color' => $color,
 						'due_date' => $due_date,
-						'type'=>$type
+						'type'=>$type,
+						'calendar'=>$calendar
 					);
 				}else{
 				$task_data = array(
@@ -546,7 +548,8 @@ public function logotp_post(){
 						'color' => $color,
 						'due_date' => $due_date,
 						'sub_tasks' => $sub_tasks,
-						'type'=>$type
+						'type'=>$type,
+						'calendar'=>$calendar
 					);
 				}
 		}
@@ -715,7 +718,7 @@ public function logotp_post(){
 		$category = $this->post('category');
 		$color = $this->post('color');
 		$sub_tasks = json_encode($this->post('sub_tasks'));
-		
+		$calendar = $this->post('calendar');
 		
 		$due_date = $this->post('due_date');
 		$type = $this->post('type');
@@ -736,7 +739,8 @@ public function logotp_post(){
 						'category' => $category,
 						'color' => $color,
 						'due_date' => $due_date,
-						'type'=>$type
+						'type'=>$type,
+						'calendar'=>$calendar
 					);
 				}else{
 				$task_data = array(
@@ -751,7 +755,8 @@ public function logotp_post(){
 						'color' => $color,
 						'due_date' => $due_date,
 						'sub_tasks' => $sub_tasks,
-						'type'=>$type
+						'type'=>$type,
+						'calendar'=>$calendar
 					);
 				}
 		}

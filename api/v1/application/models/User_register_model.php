@@ -605,9 +605,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		}
 
-		public function update_user_tasks($user_id,$id,$start_date,$name,$duration){
+		public function update_user_tasks($user_id,$id,$start_date,$name,$duration,$calendar){
 
-		    $data=array("name"=>$name,"duration"=>$duration,"due_date"=>$start_date);
+		    $data=array("name"=>$name,"duration"=>$duration,"due_date"=>$start_date,"calendar"=>$calendar);
 			
 		    $this->db->where('id',$id);
             //$this->db->where('user_id',$user_id);
